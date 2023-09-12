@@ -19,9 +19,10 @@ function Diamond(props) {
 		'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/aerodynamics_workshop_1k.hdr'
 	)
 
-	useFrame(() => {
-		ref.current.rotation.y += 0.001;
-	})
+	// useFrame(() => {
+	// 	ref.current.rotation.y += 0.001;
+	// })
+	useFrame((state, delta) => (ref.current.rotation.y += delta * 0.1))
 	return (
 		<Caustics
 			backfaces
@@ -36,11 +37,12 @@ function Diamond(props) {
 			<mesh ref={ref} geometry={nodes.Diamond_1_0.geometry} {...props}>
 				<MeshRefractionMaterial
 					envMap={texture}
-					bounces={3}
+					bounces={2}
 					aberrationStrength={0.01}
 					ior={2.4}
 					fresnel={1}
 					toneMapped={false}
+					blendDst={true}
 				/>
 			</mesh>
 		</Caustics>
@@ -52,11 +54,10 @@ export default function App() {
 	return (
 		<Canvas flat linear camera={{ position: [0, -4, 0], fov: 45 }}>
 			{isDev ? <Stats /> : ''}
-			<color attach="background" args={['#fbf9f5']} />
 			<ambientLight intensity={0.5} />
 			<Diamond rotation={[2, 0, -0.2]} position={[0, 0, 0.2]} />
 			<EffectComposer>
-				<Bloom luminanceThreshold={7} intensity={1} levels={9} mipmapBlur />
+				<Bloom luminanceThreshold={0.1} intensity={1} levels={9} mipmapBlur />
 			</EffectComposer>
 		</Canvas>
 	)
