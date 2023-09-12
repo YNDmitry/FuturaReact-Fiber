@@ -2,12 +2,10 @@ import { useRef } from 'react'
 import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import {
 	useGLTF,
-	Caustics,
 	MeshRefractionMaterial,
 	Stats,
 } from '@react-three/drei'
 import { RGBELoader } from 'three-stdlib'
-import { Bloom, EffectComposer } from '@react-three/postprocessing'
 
 function Diamond(props) {
 	const ref = useRef()
@@ -19,33 +17,17 @@ function Diamond(props) {
 		'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/aerodynamics_workshop_1k.hdr'
 	)
 
-	// useFrame(() => {
-	// 	ref.current.rotation.y += 0.001;
-	// })
 	useFrame((state, delta) => (ref.current.rotation.y += delta * 0.1))
 	return (
-		<Caustics
-			backfaces
-			color={'white'}
-			position={[0, 0, 0]}
-			lightSource={[0, 0, 0]}
-			worldRadius={0.1}
-			ior={2.8}
-			backfaceIor={1.1}
-			intensity={0.1}
-		>
-			<mesh ref={ref} geometry={nodes.Diamond_1_0.geometry} {...props}>
-				<MeshRefractionMaterial
-					envMap={texture}
-					bounces={2}
-					aberrationStrength={0.01}
-					ior={2.4}
-					fresnel={1}
-					toneMapped={false}
-					blendDst={true}
-				/>
-			</mesh>
-		</Caustics>
+		<mesh ref={ref} geometry={nodes.Diamond_1_0.geometry} {...props}>
+			<MeshRefractionMaterial
+				envMap={texture}
+				bounces={1.5}
+				aberrationStrength={0.01}
+				ior={2.6}
+				fresnel={1}
+			/>
+		</mesh >
 	)
 }
 
@@ -54,11 +36,7 @@ export default function App() {
 	return (
 		<Canvas flat linear camera={{ position: [0, -4, 0], fov: 45 }}>
 			{isDev ? <Stats /> : ''}
-			<ambientLight intensity={0.5} />
 			<Diamond rotation={[2, 0, -0.2]} position={[0, 0, 0.2]} />
-			<EffectComposer>
-				<Bloom luminanceThreshold={0.1} intensity={1} levels={9} mipmapBlur />
-			</EffectComposer>
 		</Canvas>
 	)
 }
