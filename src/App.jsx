@@ -50,12 +50,13 @@ function Diamond(props) {
 export default function App() {
 	const isDev = import.meta.env.DEV
 	return (
-		<Canvas flat camera={{ position: [0, -3, 0], fov: 45 }}>
+		<Canvas flat linear camera={{ position: [0, -4, 0], fov: 45 }}>
 			{isDev ? <Stats /> : ''}
-			<ambientLight intensity={1} />
+			<color attach="background" args={['#fbf9f5']} />
+			<ambientLight intensity={0.5} />
 			<Diamond rotation={[2, 0, -0.2]} position={[0, 0, 0.2]} />
 			<EffectComposer>
-				<Bloom luminanceThreshold={1} intensity={2} levels={9} mipmapBlur />
+				<Bloom luminanceThreshold={7} intensity={1} levels={9} mipmapBlur />
 			</EffectComposer>
 		</Canvas>
 	)
