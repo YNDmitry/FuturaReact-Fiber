@@ -47,9 +47,10 @@ function Diamond(props) {
 }
 
 export default function App() {
+	const isDev = import.meta.env.DEV
 	return (
 		<Canvas performance={{ min: 0.5 }} camera={{ position: [0, -6, 0], fov: 45 }}>
-			<Stats />
+			{isDev ? <Stats /> : ''}
 			<ambientLight intensity={0.5} />
 			<color attach="background" args={['#FBF9F5']} />
 			<Diamond rotation={[2, 0, -0.2]} position={[1, -2, 0.2]} />
