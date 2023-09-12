@@ -7,6 +7,7 @@ import {
 	Stats,
 } from '@react-three/drei'
 import { RGBELoader } from 'three-stdlib'
+import { Bloom, EffectComposer } from '@react-three/postprocessing'
 
 function Diamond(props) {
 	const ref = useRef()
@@ -15,7 +16,7 @@ function Diamond(props) {
 	)
 	const texture = useLoader(
 		RGBELoader,
-		'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/white_cliff_top_1k.hdr'
+		'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/aerodynamics_workshop_1k.hdr'
 	)
 
 	useFrame(() => {
@@ -49,11 +50,13 @@ function Diamond(props) {
 export default function App() {
 	const isDev = import.meta.env.DEV
 	return (
-		<Canvas performance={{ min: 0.5 }} camera={{ position: [0, -6, 0], fov: 45 }}>
+		<Canvas flat camera={{ position: [0, -3, 0], fov: 45 }}>
 			{isDev ? <Stats /> : ''}
-			<ambientLight intensity={0.5} />
-			<color attach="background" args={['#FBF9F5']} />
-			<Diamond rotation={[2, 0, -0.2]} position={[1, -2, 0.2]} />
+			<ambientLight intensity={1} />
+			<Diamond rotation={[2, 0, -0.2]} position={[0, 0, 0.2]} />
+			<EffectComposer>
+				<Bloom luminanceThreshold={1} intensity={2} levels={9} mipmapBlur />
+			</EffectComposer>
 		</Canvas>
 	)
 }
