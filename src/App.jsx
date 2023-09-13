@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { Canvas, useFrame, useLoader } from '@react-three/fiber'
+import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
 import {
 	useGLTF,
 	MeshRefractionMaterial,
@@ -17,7 +17,14 @@ function Diamond(props) {
 		'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/aerodynamics_workshop_1k.hdr'
 	)
 
-	useFrame((state, delta) => (ref.current.rotation.y += delta * 0.1))
+	const { viewport } = useThree()
+	useFrame(({ mouse }) => {
+		const x = (mouse.x * viewport.width) / 20
+		const y = (mouse.y * viewport.height) / 15
+		ref.current.position.set(x, y, 0.2)
+		ref.current.rotation.y += 0.01
+	})
+
 	return (
 		<mesh ref={ref} geometry={nodes.Diamond_1_0.geometry} {...props}>
 			<MeshRefractionMaterial
@@ -31,12 +38,18 @@ function Diamond(props) {
 	)
 }
 
-export default function App() {
+function MainScreen() {
 	const isDev = import.meta.env.DEV
 	return (
 		<Canvas flat linear camera={{ position: [0, -4, 0], fov: 45 }}>
 			{isDev ? <Stats /> : ''}
-			<Diamond rotation={[2, 0, -0.2]} position={[0, 0, 0.2]} />
+			<Diamond rotation={[2, 0, -0.2]} />
 		</Canvas>
+	)
+}
+
+export default function App() {
+	return (
+		<MainScreen />
 	)
 }
