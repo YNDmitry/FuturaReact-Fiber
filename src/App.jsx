@@ -6,6 +6,7 @@ import {
 	Stats,
 } from '@react-three/drei'
 import { RGBELoader } from 'three-stdlib'
+import gsap from 'gsap'
 
 function Diamond(props) {
 	const ref = useRef()
@@ -21,7 +22,12 @@ function Diamond(props) {
 	useFrame(({ mouse }) => {
 		const x = (mouse.x * viewport.width) / 20
 		const y = (mouse.y * viewport.height) / 15
-		ref.current.position.set(x, y, 0.2)
+		gsap.to(ref.current.position, {
+			x: x,
+			y: y,
+			z: 0.2,
+			duration: 1.5
+		})
 		ref.current.rotation.y += 0.01
 	})
 

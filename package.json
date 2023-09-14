@@ -7,13 +7,15 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "push": "bun run build && git add . && git commit -m 'updates' && git push -u origin master"
   },
   "dependencies": {
     "@react-three/drei": "^9.83.9",
     "@react-three/fiber": "^8.14.1",
     "@react-three/postprocessing": "^2.15.1",
     "@types/three": "^0.156.0",
+    "gsap": "^3.12.2",
     "leva": "^0.9.35",
     "r3f-perf": "^7.1.2",
     "react": "^18.2.0",
