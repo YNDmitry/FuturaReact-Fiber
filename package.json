@@ -11,6 +11,7 @@
     "push": "bun run build && git add . && git commit -m 'updates' && git push -u origin master"
   },
   "dependencies": {
+    "@react-spring/web": "^9.7.3",
     "@react-three/drei": "^9.83.9",
     "@react-three/fiber": "^8.14.1",
     "@react-three/postprocessing": "^2.15.1",
