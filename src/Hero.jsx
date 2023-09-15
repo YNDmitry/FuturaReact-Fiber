@@ -4,10 +4,10 @@ import { Stats } from '@react-three/drei'
 import gsap from 'gsap'
 import Diamond from './components/Diamond'
 import { useInView } from '@react-spring/web'
-
 function CurrentDiamond() {
   const ref = useRef()
   const position = [1.5, 0, 0.2]
+  const rotation = [2, 0, -0.2]
 
   const { viewport } = useThree()
   useFrame(({ mouse }) => {
@@ -19,11 +19,31 @@ function CurrentDiamond() {
       z: position[2],
       duration: 1.5
     })
-    ref.current.rotation.y += 0.01
   })
 
+  const isAnimating = useRef(false)
+  function inEnter() {
+    if (!isAnimating.current) {
+      gsap.fromTo(ref.current.rotation, {
+        y: rotation[2],
+      }, {
+        y: rotation[2] + 3,
+        duration: 10,
+        onComplete: () => {
+          rotation[2] = rotation[2] + 3;
+          console.log(rotation[2]);
+          isAnimating.current = false
+        },
+      });
+      isAnimating.current = true
+    }
+  }
+
   return (
-    <Diamond forwardedRef={ref} rotation={[2, 0, -0.2]} position={position} />
+    <>
+      <ambientLight color={0x404040} intensity={4} />
+      <Diamond forwardedRef={ref} rotation={rotation} position={position} onPointerEnter={(e) => inEnter(e)} />
+    </>
   )
 }
 
