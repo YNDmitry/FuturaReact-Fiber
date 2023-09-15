@@ -19,30 +19,15 @@ function CurrentDiamond() {
       z: position[2],
       duration: 1.5
     })
+    gsap.to(ref.current.rotation, {
+      y: rotation[2] + mouse.x,
+    })
   })
-
-  const isAnimating = useRef(false)
-  function inEnter() {
-    if (!isAnimating.current) {
-      gsap.fromTo(ref.current.rotation, {
-        y: rotation[2],
-      }, {
-        y: rotation[2] + 3,
-        duration: 10,
-        onComplete: () => {
-          rotation[2] = rotation[2] + 3;
-          console.log(rotation[2]);
-          isAnimating.current = false
-        },
-      });
-      isAnimating.current = true
-    }
-  }
 
   return (
     <>
       <ambientLight color={0x404040} intensity={4} />
-      <Diamond forwardedRef={ref} rotation={rotation} position={position} onPointerEnter={(e) => inEnter(e)} />
+      <Diamond forwardedRef={ref} rotation={rotation} position={position} />
     </>
   )
 }

@@ -19,8 +19,8 @@ export default function Diamond(props) {
         envMap={texture}
         bounces={1.5}
         aberrationStrength={0.01}
-        ior={2.6}
-        fresnel={1}
+        ior={2.4}
+        fresnel={3}
       />
     </mesh >
   )
