@@ -1,5 +1,5 @@
+import { TextureLoader } from 'three'
 import { MeshRefractionMaterial, useGLTF } from '@react-three/drei'
-import { RGBELoader } from 'three-stdlib'
 import { useLoader } from '@react-three/fiber'
 import React from 'react'
 
@@ -9,8 +9,8 @@ export default function Diamond(props) {
     'https://uploads-ssl.webflow.com/64fb0433305262197cecd66e/650096b511e91a1b23d770c2_diamond.glb.txt'
   )
   const texture = useLoader(
-    RGBELoader,
-    'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/photo_studio_01_1k.hdr'
+    TextureLoader,
+    'https://uploads-ssl.webflow.com/64fb0433305262197cecd66e/6505bc0d84ac02253c7782e6_augustine-wong-li0iC0rjvvg-unsplash.jpg'
   )
 
   return (
@@ -18,8 +18,8 @@ export default function Diamond(props) {
       <MeshRefractionMaterial
         envMap={texture}
         bounces={1.5}
-        aberrationStrength={0.01}
-        ior={2.4}
+        aberrationStrength={0.05}
+        ior={2}
         fresnel={3}
       />
     </mesh >
