@@ -29,7 +29,7 @@ function CurrentDiamond() {
       })
       gsap.to(ref.current.rotation, {
         y: rotation[2] + mouse.x * 2,
-        x: rotation[0] + mouse.y / 2
+        x: rotation[0] + -mouse.y / 2
       })
     }
   })

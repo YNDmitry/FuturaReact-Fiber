@@ -10,15 +10,15 @@ export default function Diamond(props) {
   )
   const texture = useLoader(
     TextureLoader,
-    'https://uploads-ssl.webflow.com/64fb0433305262197cecd66e/6505bc0d84ac02253c7782e6_augustine-wong-li0iC0rjvvg-unsplash.jpg'
+    'https://images.unsplash.com/photo-1560780552-ba54683cb263?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
   )
 
   return (
     <mesh ref={forwardedRef || null} geometry={nodes.Diamond_1_0.geometry} {...props}>
       <MeshRefractionMaterial
         envMap={texture}
-        bounces={1.5}
-        aberrationStrength={0.05}
+        bounces={2}
+        aberrationStrength={0.01}
         ior={2}
         fresnel={3}
       />
