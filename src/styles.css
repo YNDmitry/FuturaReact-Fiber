@@ -3,15 +3,17 @@
 }
 
 html,
-body,
-#hero-canvas,
-#contact-canvas {
-	width: 100vw;
-	height: 100vh;
+body {
 	margin: 0;
 	padding: 0;
 }
 
+#hero-canvas {
+	height: 50vh;
+	width: 50vw;
+	margin-left: auto;
+}
+
 body {
-	background: #fbf9f5;
+	background: black;
 }
