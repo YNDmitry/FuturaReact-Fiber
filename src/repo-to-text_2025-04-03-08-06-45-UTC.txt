@@ -1,0 +1,160 @@
+Directory: src
+
+Directory Structure:
+```
+.
+
+```
+
+Contents of styles.css:
+```
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+
+#hero-canvas {
+	height: 50vh;
+	width: 50vw;
+	margin-left: auto;
+}
+
+body {
+	background: black;
+}
+
+```
+
+Contents of vite-env.d.ts:
+```
+/// <reference types="vite/client" />
+
+```
+
+Contents of main.jsx:
+```
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import Hero from './Hero.jsx'
+
+ReactDOM.createRoot(document.getElementById('hero-canvas')).render(<Hero />)
+
+```
+
+Contents of Hero.jsx:
+```
+import React, { useRef } from 'react'
+import { Canvas, useFrame } from '@react-three/fiber'
+import gsap from 'gsap'
+import Diamond from './components/Diamond'
+import { Perf } from 'r3f-perf'
+import { AdaptiveDpr } from '@react-three/drei'
+import { useInView } from '@react-spring/web'
+
+function CurrentDiamond() {
+  const ref = useRef()
+  const position = [0, 0, -0.5]
+  const rotation = [2, 0, -0.2]
+
+  if (window.innerWidth <= 991) {
+    position[0] = 0
+  }
+  let mouse = {
+    x: 0,
+    y: 0
+  }
+  document.addEventListener('mousemove', (e) => {
+    mouse.x = e.x
+    mouse.y = e.y
+  })
+  useFrame(() => {
+    if (window.innerWidth <= 991) {
+      ref.current.rotation.y += 0.01
+    } else {
+      const x = mouse.x / window.innerWidth
+      const y = mouse.y / window.innerHeight
+      gsap.to(ref.current.position, {
+        x: x + position[0],
+        duration: 1.5
+      })
+      gsap.to(ref.current.rotation, {
+        y: rotation[2] + x * 2,
+        x: rotation[0] + y - 0.8
+      })
+    }
+  })
+
+
+  return (
+    <>
+      <ambientLight color={0x404040} intensity={4} />
+      <Diamond forwardedRef={ref} rotation={rotation} position={position} />
+    </>
+  )
+}
+
+function DisableRender() {
+  useFrame(() => null, 1000);
+}
+
+function HeroScreen() {
+  const isDev = import.meta.env.DEV
+  const [ref, inView] = useInView()
+
+  return (
+    <div ref={ref} style={{ height: '100%' }}>
+      <Canvas flat linear camera={{ position: [0, -3, 0], fov: 45 }}>
+        {isDev ? <Perf position="top-left" /> : ''}
+        <ambientLight />
+        <pointLight position={[1.5, 0, 0.2]} />
+        <CurrentDiamond />
+        <AdaptiveDpr pixelated />
+        {!inView && <DisableRender />}
+      </Canvas>
+    </div>
+  )
+}
+
+export default function Hero() {
+  return (
+    <HeroScreen />
+  )
+}
+```
+
+Contents of components/Diamond.jsx:
+```
+import { TextureLoader } from 'three'
+import { MeshRefractionMaterial, useGLTF } from '@react-three/drei'
+import { useLoader } from '@react-three/fiber'
+import React from 'react'
+
+export default function Diamond(props) {
+  const { forwardedRef } = props
+  const { nodes } = useGLTF(
+    'https://uploads-ssl.webflow.com/64fb0433305262197cecd66e/650096b511e91a1b23d770c2_diamond.glb.txt'
+  )
+  const texture = useLoader(
+    TextureLoader,
+    'https://images.unsplash.com/photo-1560780552-ba54683cb263?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80'
+  )
+
+  return (
+    <mesh ref={forwardedRef || null} geometry={nodes.Diamond_1_0.geometry} {...props}>
+      <MeshRefractionMaterial
+        envMap={texture}
+        bounces={2}
+        aberrationStrength={0.01}
+        ior={2}
+        fresnel={3}
+      />
+    </mesh >
+  )
+}
+```
+
